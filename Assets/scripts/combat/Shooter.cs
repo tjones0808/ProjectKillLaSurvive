@@ -6,9 +6,7 @@ public class Shooter : MonoBehaviour {
 
     [SerializeField] float rateOfFire;
     [SerializeField] Transform projectile;
-
-    [HideInInspector]
-    public Transform muzzle;
+    [SerializeField] Transform hand;
 
     private WeaponReloader reloader;
     public void Reload()
@@ -24,11 +22,14 @@ public class Shooter : MonoBehaviour {
 
     public float nextFireAllowed;
     public bool canFire;
+    Transform muzzle;
 
     private void Awake()
     {
         muzzle = transform.Find("Muzzle");
         reloader = GetComponent<WeaponReloader>();
+
+        transform.SetParent(hand);
     }
 
     public virtual void Fire()
