@@ -98,6 +98,7 @@
     <Compile Include="Assets\scripts\player\Player.cs" />
     <Compile Include="Assets\scripts\player\PlayerAnimation.cs" />
     <Compile Include="Assets\scripts\player\PlayerShoot.cs" />
+    <Compile Include="Assets\shared\Container.cs" />
     <Compile Include="Assets\shared\Destructable.cs" />
     <Compile Include="Assets\shared\GameManager.cs" />
     <Compile Include="Assets\shared\Respawner.cs" />
