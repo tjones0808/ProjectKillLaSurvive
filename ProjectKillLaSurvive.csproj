@@ -103,6 +103,7 @@
     <Compile Include="Assets\shared\Container.cs" />
     <Compile Include="Assets\shared\Destructable.cs" />
     <Compile Include="Assets\shared\GameManager.cs" />
+    <Compile Include="Assets\shared\PickupItem.cs" />
     <Compile Include="Assets\shared\Respawner.cs" />
     <Compile Include="Assets\shared\Timer.cs" />
   </ItemGroup>

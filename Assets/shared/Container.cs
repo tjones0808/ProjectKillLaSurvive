@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class Container : MonoBehaviour {
-    
+public class Container : MonoBehaviour
+{
+
 
     [System.Serializable]
     public class ContainerItem
@@ -65,7 +66,8 @@ public class Container : MonoBehaviour {
         if (items == null)
             items = new List<ContainerItem>();
 
-        items.Add(new ContainerItem {
+        items.Add(new ContainerItem
+        {
             Maximum = maximum,
             Name = name
         });
@@ -81,5 +83,25 @@ public class Container : MonoBehaviour {
             return -1;
 
         return containerItem.Get(amount);
+    }
+
+    public int GetAmountRemaining(System.Guid id)
+    {
+        var item = GetContainerItem(id);
+
+        if (item == null)
+            return -1;
+
+        return item.Remaining;
+    }
+
+    private ContainerItem GetContainerItem(System.Guid id)
+    {
+        var containerItem = items.Where(x => x.Id == id).FirstOrDefault();
+
+        if (containerItem == null)
+            return null;
+
+        return containerItem;
     }
 }

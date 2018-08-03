@@ -13,6 +13,8 @@ public class PlayerShoot : MonoBehaviour {
     bool canFire;
     Transform weaponHolster;
 
+    public event System.Action<Shooter> OnWeaponSwitch;
+
 
     private void Awake()
     {
@@ -59,6 +61,9 @@ public class PlayerShoot : MonoBehaviour {
         activeWeapon.Equip();
         canFire = true;
         weapons[weaponIndex].gameObject.SetActive(true);
+
+        if (OnWeaponSwitch != null)
+            OnWeaponSwitch(activeWeapon);
     }
 
     void SwitchWeapon(int direction)
