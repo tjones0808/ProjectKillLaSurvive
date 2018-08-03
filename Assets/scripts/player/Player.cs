@@ -23,8 +23,10 @@ public class Player : MonoBehaviour {
     [SerializeField] AudioController footsteps;
     [SerializeField] float minMoveThreshold;
 
+    public PlayerAim playerAim;
     Vector3 previousPosition;
 
+    [HideInInspector]
     public PlayerShoot playerShoot;
     
 
@@ -59,7 +61,8 @@ public class Player : MonoBehaviour {
     void Awake()
     {
         playerShoot = GetComponent<PlayerShoot>();
-        playerInput = GameManager.Instance.InputController;
+        playerInput = GameManager.Instance.InputController;        
+
         GameManager.Instance.LocalPlayer = this;
 
         if (MouseControl.LockMouse)
@@ -115,5 +118,8 @@ public class Player : MonoBehaviour {
         transform.Rotate(Vector3.up * mouseInput.x * MouseControl.Sensitivity.x);
 
         Crosshair.LookHeight(mouseInput.y * MouseControl.Sensitivity.y);
+
+        playerAim.SetRotation(mouseInput.y * MouseControl.Sensitivity.y);
+
     }
 }

@@ -21,7 +21,7 @@ public class InputController : MonoBehaviour {
     {
         Vertical = Input.GetAxis("Vertical");
         Horizontal = Input.GetAxis("Horizontal");
-        MouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
+        MouseInput = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y") * -1);
         Fire1 = Input.GetButton("Fire1");
         Reload = Input.GetKey(KeyCode.R);
         IsWalking = Input.GetKey(KeyCode.LeftAlt);
