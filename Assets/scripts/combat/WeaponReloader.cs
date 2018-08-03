@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +9,10 @@ public class WeaponReloader : MonoBehaviour
     [SerializeField] int maxAmmo;
     [SerializeField] float reloadTime;
     [SerializeField] int clipSize;
+    [SerializeField] Container inventory;
 
-    int ammo;
     public int shotsFiredInClip;
-
+    Guid containerItemId;
     bool isReloading;
 
     public int RoundsRemainingInClip
@@ -29,37 +30,42 @@ public class WeaponReloader : MonoBehaviour
             return isReloading;
         }
     }
+
+    private void Awake()
+    {
+
+        containerItemId = inventory.Add(this.name, maxAmmo);
+
+
+    }
     public void Reload()
     {
-        print("step 5");
         if (isReloading)
             return;
 
-        print("Reloading");
         isReloading = true;
+        int amountFromInventory = inventory.TakeFromContainer(containerItemId, clipSize - RoundsRemainingInClip);
 
-        GameManager.Instance.Timer.Add(ExecuteReload, reloadTime);
+        if (amountFromInventory > 0)
+            print("Cock locked and ready to rock.");
+        else
+            print("inventory empty");
+
+        GameManager.Instance.Timer.Add(() =>
+        {
+            ExecuteReload(amountFromInventory);
+        }, reloadTime);
     }
 
-    private void ExecuteReload()
+    private void ExecuteReload(int amount)
     {
-        print("Cock locked and ready to rock.");
         isReloading = false;
+        shotsFiredInClip -= amount;
 
-        ammo -= shotsFiredInClip;
-
-        shotsFiredInClip = 0;
-
-        if (ammo < 0)
-        {
-            ammo = 0;
-            shotsFiredInClip += -ammo;
-        }
     }
 
     public void TakeFromClip(int amount)
     {
-        print("step 4");
         shotsFiredInClip += amount;
     }
 }

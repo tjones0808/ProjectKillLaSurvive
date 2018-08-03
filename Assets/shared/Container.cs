@@ -5,32 +5,81 @@ using UnityEngine;
 using System.Linq;
 
 public class Container : MonoBehaviour {
+    
 
-    private class ContainerItem
+    [System.Serializable]
+    public class ContainerItem
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public int Maximum { get; set; }
 
-        private int amountTaken;
+        public string Name;
+        public int Maximum;
+        public Guid Id;
 
+
+        public int amountTaken;
+
+        public ContainerItem()
+        {
+            Id = System.Guid.NewGuid();
+
+        }
+
+        public int Remaining
+        {
+            get
+            {
+                return Maximum - amountTaken;
+            }
+        }
+
+        public int Get(int amount)
+        {
+            if (amountTaken + amount > Maximum)
+            {
+                int tooMuch = amountTaken + amount - Maximum;
+                amountTaken = Maximum;
+                return amount - tooMuch;
+            }
+
+            amountTaken += amount;
+
+            return amount;
+
+        }
+
+        public void Put(int value)
+        {
+
+        }
     }
 
-    List<ContainerItem> items;
+
+    public List<ContainerItem> items;
 
     private void Awake()
     {
-        items = new List<ContainerItem>();
     }
 
     public Guid Add(string name, int maximum)
     {
+        if (items == null)
+            items = new List<ContainerItem>();
+
         items.Add(new ContainerItem {
-            Id = System.Guid.NewGuid(),
             Maximum = maximum,
-            Name =name
+            Name = name
         });
 
         return items.Last().Id;
+    }
+
+    public int TakeFromContainer(Guid id, int amount)
+    {
+        var containerItem = items.Where(x => x.Id == id).FirstOrDefault();
+
+        if (containerItem == null)
+            return -1;
+
+        return containerItem.Get(amount);
     }
 }

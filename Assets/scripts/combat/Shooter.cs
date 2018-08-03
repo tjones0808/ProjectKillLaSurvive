@@ -10,12 +10,10 @@ public class Shooter : MonoBehaviour {
 
     private WeaponReloader reloader;
     public void Reload()
-    {
-        print("step 6");
+    {        
         if (reloader == null)
             return;
-
-        print("step 3");
+        
         reloader.Reload();
 
     }
@@ -24,12 +22,17 @@ public class Shooter : MonoBehaviour {
     public bool canFire;
     Transform muzzle;
 
+    public void Equip()
+    {
+        transform.SetParent(hand);
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+    }    
+
     private void Awake()
     {
-        muzzle = transform.Find("Muzzle");
+        muzzle = transform.Find("Model/Muzzle");
         reloader = GetComponent<WeaponReloader>();
-
-        transform.SetParent(hand);
     }
 
     public virtual void Fire()
@@ -42,7 +45,6 @@ public class Shooter : MonoBehaviour {
 
         if (reloader != null)
         {
-            print("step 1");
             if (reloader.IsReloading)
                 return;
             if (reloader.RoundsRemainingInClip == 0)
@@ -50,7 +52,7 @@ public class Shooter : MonoBehaviour {
 
             // need to setup fire modes
             reloader.TakeFromClip(1);
-            print("step 2");
+         
         }
 
         nextFireAllowed = Time.time + rateOfFire;
