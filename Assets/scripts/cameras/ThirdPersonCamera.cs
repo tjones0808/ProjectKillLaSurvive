@@ -27,6 +27,9 @@ public class ThirdPersonCamera : MonoBehaviour {
 
     private void Update()
     {
+        if (localPlayer == null)
+            return;
+
         Vector3 targetPosition = cameraLookTarget.position + 
             localPlayer.transform.forward * cameraOffset.z +
             localPlayer.transform.up * cameraOffset.y +

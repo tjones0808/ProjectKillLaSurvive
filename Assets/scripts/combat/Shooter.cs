@@ -7,15 +7,17 @@ public class Shooter : MonoBehaviour {
     [SerializeField] float rateOfFire;
     [SerializeField] Transform projectile;
     [SerializeField] Transform hand;
+    [SerializeField] AudioController audioReload;
+    [SerializeField] AudioController audioFire;
 
-    private WeaponReloader reloader;
+    public WeaponReloader reloader;
     public void Reload()
     {        
         if (reloader == null)
             return;
         
         reloader.Reload();
-
+        audioReload.Play();
     }
 
     public float nextFireAllowed;
@@ -58,7 +60,7 @@ public class Shooter : MonoBehaviour {
         nextFireAllowed = Time.time + rateOfFire;
 
         Instantiate(projectile, muzzle.position, muzzle.rotation);
-        
+        audioFire.Play();
         canFire = true;
     }
 }

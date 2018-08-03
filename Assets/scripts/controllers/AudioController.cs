@@ -15,11 +15,11 @@ public class AudioController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         source = GetComponent<AudioSource>();
+        canPlay = true;
 	}
 
     public void Play()
     {
-
         if (!canPlay)
             return;
 

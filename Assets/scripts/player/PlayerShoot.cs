@@ -7,7 +7,7 @@ public class PlayerShoot : MonoBehaviour {
     [SerializeField] float weaponSwitchTime;
 
     Shooter[] weapons;
-    Shooter activeWeapon;
+    public Shooter activeWeapon;
 
     int currentWeaponIndex;
     bool canFire;

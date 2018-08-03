@@ -20,6 +20,10 @@ public class Player : MonoBehaviour {
     [SerializeField] float sprintSpeed;
     [SerializeField] float proneSpeed;
     [SerializeField] MouseInput MouseControl;
+    [SerializeField] AudioController footsteps;
+    [SerializeField] float minMoveThreshold;
+
+    Vector3 previousPosition;
 
     MoveController m_moveController;
     public MoveController MoveController
@@ -77,10 +81,17 @@ public class Player : MonoBehaviour {
         if (playerInput.IsSprinting)
             moveSpeed = sprintSpeed;
 
-
-
         Vector2 direction = new Vector2(playerInput.Vertical * runSpeed, playerInput.Horizontal * runSpeed);
+
+        //if (direction != Vector2.zero)
+        //    footsteps.Play();
+
         MoveController.Move(direction);
+
+        if (Vector3.Distance(transform.position, previousPosition) > minMoveThreshold)
+            footsteps.Play();
+
+        previousPosition = transform.position;
     }
 	
 	// Update is called once per frame

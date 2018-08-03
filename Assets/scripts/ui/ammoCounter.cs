@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ammoCounter : MonoBehaviour {
+
+    [SerializeField] Text text;
+    
+    PlayerShoot playerShoot;
+	// Use this for initialization
+	void Awake () {
+        GameManager.Instance.OnLocalPlayerJoined += Instance_OnLocalPlayerJoined;
+	}
+
+    private void Instance_OnLocalPlayerJoined(Player obj)
+    {
+        // assuming player obj has container is bad code
+        playerShoot = obj.GetComponent<PlayerShoot>();
+        playerShoot.activeWeapon.reloader.OnAmmoChanged += HandleOnAmmoChanged;
+    }
+
+    private void HandleOnAmmoChanged()
+    {
+        text.text = playerShoot.activeWeapon.reloader.RoundsRemainingInClip.ToString();
+    }
+
+    // Update is called once per frame
+    void Update () {
+		
+	}
+}
