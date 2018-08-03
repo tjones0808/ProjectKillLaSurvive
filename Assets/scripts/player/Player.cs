@@ -25,6 +25,9 @@ public class Player : MonoBehaviour {
 
     Vector3 previousPosition;
 
+    public PlayerShoot playerShoot;
+    
+
     MoveController m_moveController;
     public MoveController MoveController
     {
@@ -55,6 +58,7 @@ public class Player : MonoBehaviour {
 
     void Awake()
     {
+        playerShoot = GetComponent<PlayerShoot>();
         playerInput = GameManager.Instance.InputController;
         GameManager.Instance.LocalPlayer = this;
 

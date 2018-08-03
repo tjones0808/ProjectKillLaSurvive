@@ -48,10 +48,19 @@ public class Container : MonoBehaviour
 
         }
 
+
+        public void Set(int amount)
+        {
+            amountTaken -= amount;
+            if (amountTaken < 0)
+                amountTaken = 0;
+        }
+
         public void Put(int value)
         {
 
         }
+
     }
 
 
@@ -73,6 +82,16 @@ public class Container : MonoBehaviour
         });
 
         return items.Last().Id;
+    }
+
+    public void Put(string name, int amount)
+    {
+        var containerItem = items.Where(x => x.Name == name).FirstOrDefault();
+
+        if (containerItem == null)
+            return;
+
+        containerItem.Set(amount);
     }
 
     public int TakeFromContainer(Guid id, int amount)
