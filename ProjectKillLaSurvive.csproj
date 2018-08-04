@@ -93,6 +93,7 @@
     <Compile Include="Assets\scripts\combat\Health.cs" />
     <Compile Include="Assets\scripts\combat\Projectile.cs" />
     <Compile Include="Assets\scripts\combat\Shooter.cs" />
+    <Compile Include="Assets\scripts\combat\ShootingRangeTarget.cs" />
     <Compile Include="Assets\scripts\combat\WeaponReloader.cs" />
     <Compile Include="Assets\scripts\controllers\AudioController.cs" />
     <Compile Include="Assets\scripts\controllers\InputController.cs" />
