@@ -9,6 +9,7 @@ public class Shooter : MonoBehaviour {
     [SerializeField] Transform hand;
     [SerializeField] AudioController audioReload;
     [SerializeField] AudioController audioFire;
+    [SerializeField] Transform aimTarget;
 
     public WeaponReloader reloader;
     public void Reload()
@@ -58,6 +59,8 @@ public class Shooter : MonoBehaviour {
         }
 
         nextFireAllowed = Time.time + rateOfFire;
+
+        muzzle.LookAt(aimTarget);
 
         Instantiate(projectile, muzzle.position, muzzle.rotation);
         audioFire.Play();

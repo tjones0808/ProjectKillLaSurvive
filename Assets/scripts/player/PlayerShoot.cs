@@ -36,6 +36,9 @@ public class PlayerShoot : MonoBehaviour {
         else if (GameManager.Instance.InputController.MouseWheelUp > 0)
             SwitchWeapon(1);
 
+        if (GameManager.Instance.LocalPlayer.PlayerState.MoveState == PlayerState.EMoveState.SPRINTING)
+            return;
+
         if (!canFire)
             return;
 

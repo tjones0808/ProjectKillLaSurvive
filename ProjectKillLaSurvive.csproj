@@ -102,6 +102,7 @@
     <Compile Include="Assets\scripts\player\PlayerAim.cs" />
     <Compile Include="Assets\scripts\player\PlayerAnimation.cs" />
     <Compile Include="Assets\scripts\player\PlayerShoot.cs" />
+    <Compile Include="Assets\scripts\player\PlayerState.cs" />
     <Compile Include="Assets\scripts\ui\ammoCounter.cs" />
     <Compile Include="Assets\shared\Container.cs" />
     <Compile Include="Assets\shared\Destructable.cs" />

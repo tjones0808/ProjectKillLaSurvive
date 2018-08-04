@@ -4,16 +4,27 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
 
+    [System.Serializable]
+    public class CameraRig
+    {
+        public GameObject target;
+        public float CrouchHeight;
+    }
+
+    [SerializeField] CameraRig defaultCamera;
+    [SerializeField] CameraRig aimCamera;
+    [SerializeField] CameraRig crouchCamera;
+    [SerializeField] CameraRig proneCamera;
+
+
+
+
     public float CameraMoveSpeed = 120.0f;
-    public GameObject CameraFollowObj;
     Vector3 FollowPOS;
     public float clampAngle = 80.0f;
     public float inputSensitivity = 150.0f;
     public GameObject CameraObj;
     public GameObject PlayerObj;
-    public float camDistanceXToPlayer;
-    public float camDistanceYToPlayer;
-    public float camDistanceZToPlayer;
     public float mouseX;
     public float mouseY;
     public float finalInputX;
@@ -29,9 +40,23 @@ public class CameraFollow : MonoBehaviour {
         rotY = rot.y;
         rotX = rot.x;
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+
+    private void Awake()
+    {
+        GameManager.Instance.OnLocalPlayerJoined += Instance_OnLocalPlayerJoined;
+    }
+
+    Player localPlayer;
+
+    private void Instance_OnLocalPlayerJoined(Player player)
+    {
+        localPlayer = player;
+    }
+
+    // Update is called once per frame
+    void Update () {
+
         //We setup rotation of the sticks here for controller support
         float inputX = Input.GetAxis("RightStickHorizontal");
         float inputZ = Input.GetAxis("RightStickVertical");
@@ -46,6 +71,7 @@ public class CameraFollow : MonoBehaviour {
         rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
+
 	}
     private void LateUpdate()
     {
@@ -54,11 +80,16 @@ public class CameraFollow : MonoBehaviour {
 
     void CameraUpdater()
     {
-        //set the target to follow
-        Transform target = CameraFollowObj.transform;
+        CameraRig cameraRig = defaultCamera;
+
+        if (localPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMING || localPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMEDFIRING)
+        {
+            //set the target to follow
+            cameraRig = aimCamera;
+        }
 
         //move towars game obj that is the targer
         float step = CameraMoveSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        transform.position = Vector3.MoveTowards(transform.position, cameraRig.target.transform.position, step);
     }
 }
