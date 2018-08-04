@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MoveController))]
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerState))]
 public class Player : MonoBehaviour {
     [System.Serializable]

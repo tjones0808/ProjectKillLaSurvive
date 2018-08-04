@@ -99,6 +99,7 @@
     <Compile Include="Assets\scripts\controllers\AudioController.cs" />
     <Compile Include="Assets\scripts\controllers\InputController.cs" />
     <Compile Include="Assets\scripts\controllers\MoveController.cs" />
+    <Compile Include="Assets\scripts\npc\EnemyPlayer.cs" />
     <Compile Include="Assets\scripts\pickups\AmmoPickup.cs" />
     <Compile Include="Assets\scripts\player\Player.cs" />
     <Compile Include="Assets\scripts\player\PlayerAim.cs" />
@@ -110,8 +111,10 @@
     <Compile Include="Assets\shared\Container.cs" />
     <Compile Include="Assets\shared\Destructable.cs" />
     <Compile Include="Assets\shared\GameManager.cs" />
+    <Compile Include="Assets\shared\PathFinder.cs" />
     <Compile Include="Assets\shared\PickupItem.cs" />
     <Compile Include="Assets\shared\Respawner.cs" />
+    <Compile Include="Assets\shared\Scanner.cs" />
     <Compile Include="Assets\shared\SpawnPoint.cs" />
     <Compile Include="Assets\shared\Timer.cs" />
   </ItemGroup>
