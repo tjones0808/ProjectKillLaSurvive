@@ -12,6 +12,11 @@ public class Shooter : MonoBehaviour {
     [SerializeField] Transform aimTarget;
 
     public WeaponReloader reloader;
+
+    private ParticleSystem muzzleFireSystem;
+
+
+
     public void Reload()
     {        
         if (reloader == null)
@@ -36,6 +41,15 @@ public class Shooter : MonoBehaviour {
     {
         muzzle = transform.Find("Model/Muzzle");
         reloader = GetComponent<WeaponReloader>();
+        muzzleFireSystem = muzzle.GetComponent<ParticleSystem>();
+    }
+
+    void FireEffect()
+    {
+        if (muzzleFireSystem == null)
+            return;
+
+        muzzleFireSystem.Play();
     }
 
     public virtual void Fire()
@@ -61,8 +75,10 @@ public class Shooter : MonoBehaviour {
         nextFireAllowed = Time.time + rateOfFire;
 
         muzzle.LookAt(aimTarget);
+        
 
         Instantiate(projectile, muzzle.position, muzzle.rotation);
+        FireEffect();
         audioFire.Play();
         canFire = true;
     }

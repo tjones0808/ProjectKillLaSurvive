@@ -84,6 +84,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Ragdoll_TEST.cs" />
     <Compile Include="Assets\scripts\cameras\CameraCollision.cs" />
     <Compile Include="Assets\scripts\cameras\CameraFollow.cs" />
     <Compile Include="Assets\scripts\cameras\ThirdPersonCamera.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Assets\scripts\player\Player.cs" />
     <Compile Include="Assets\scripts\player\PlayerAim.cs" />
     <Compile Include="Assets\scripts\player\PlayerAnimation.cs" />
+    <Compile Include="Assets\scripts\player\PlayerHealth.cs" />
     <Compile Include="Assets\scripts\player\PlayerShoot.cs" />
     <Compile Include="Assets\scripts\player\PlayerState.cs" />
     <Compile Include="Assets\scripts\ui\ammoCounter.cs" />
@@ -110,6 +112,7 @@
     <Compile Include="Assets\shared\GameManager.cs" />
     <Compile Include="Assets\shared\PickupItem.cs" />
     <Compile Include="Assets\shared\Respawner.cs" />
+    <Compile Include="Assets\shared\SpawnPoint.cs" />
     <Compile Include="Assets\shared\Timer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
