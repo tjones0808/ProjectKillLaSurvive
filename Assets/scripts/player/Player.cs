@@ -31,14 +31,14 @@ public class Player : MonoBehaviour {
     public PlayerShoot playerShoot;
     
 
-    MoveController m_moveController;
-    public MoveController MoveController
+    CharacterController m_moveController;
+    public CharacterController MoveController
     {
         get
         {
             if (m_moveController == null)
             {
-                m_moveController = GetComponent<MoveController>();
+                m_moveController = GetComponent<CharacterController>();
             }
             return m_moveController;
         }
@@ -95,7 +95,7 @@ public class Player : MonoBehaviour {
         //if (direction != Vector2.zero)
         //    footsteps.Play();
 
-        MoveController.Move(direction);
+        MoveController.Move(transform.forward * direction.x * .01f + transform.right * direction.y * .01f);
 
         if (Vector3.Distance(transform.position, previousPosition) > minMoveThreshold)
             footsteps.Play();
