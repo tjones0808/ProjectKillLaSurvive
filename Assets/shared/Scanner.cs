@@ -14,63 +14,32 @@ public class Scanner : MonoBehaviour
 
 
     SphereCollider rangeTrigger;
-    // only players for now, could expand
-    List<Player> targets;
 
-    public event System.Action<Vector3> OnTargetSelected;
-
-
-    Player m_selectedTarget;    
-    Player selectedTarget
+    public float ScanRange
     {
         get
         {
-            return m_selectedTarget;
-        }
-
-        set
-        {
-            m_selectedTarget = value;
-
-            if (m_selectedTarget == null)
-                return;
-
-            if (OnTargetSelected != null)
-                OnTargetSelected(m_selectedTarget.transform.position);
+            if (rangeTrigger = null)
+                rangeTrigger = GetComponent<SphereCollider>();
+            return rangeTrigger.radius;
         }
     }
 
-
-    private void Start()
-    {
-        rangeTrigger = GetComponent<SphereCollider>();
-
-        targets = new List<Player>();
-
-        PrepareScan();
-    }
+    public event System.Action OnScanReady;
+    
 
     void PrepareScan()
     {
-        if (selectedTarget != null)
-            return;
-
-
-
-        GameManager.Instance.Timer.Add(ScanForTarget, scanSpeed);
+        GameManager.Instance.Timer.Add(() => 
+        {
+            if (OnScanReady != null)
+                OnScanReady();
+        }, scanSpeed);
     }
     
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.cyan;
-
-        if (selectedTarget != null)
-        {
-            Gizmos.DrawLine(transform.position, selectedTarget.transform.position);
-        }
-
         Gizmos.color = Color.green;
-
         Gizmos.DrawLine(transform.position, transform.position + GetViewAngle(fieldOfView / 2) * GetComponent<SphereCollider>().radius);
         Gizmos.DrawLine(transform.position, transform.position + GetViewAngle(-fieldOfView / 2) * GetComponent<SphereCollider>().radius);
     }
@@ -81,46 +50,32 @@ public class Scanner : MonoBehaviour
         return new Vector3(Mathf.Sin(radian), 0, Mathf.Cos(radian));
     }
 
-    void ScanForTarget()
+    public List<T> ScanForTargets<T>()
     {
         // this would make the target line disappear after a target is out of scanner range
         //selectedTarget = null;
+        List<T> targets = new List<T>();
 
-
-        Collider[] results = Physics.OverlapSphere(transform.position, rangeTrigger.radius);
+        Collider[] results = Physics.OverlapSphere(transform.position, ScanRange);
 
         for (int i = 0; i < results.Length; i++)
         {
-            var player = results[i].transform.GetComponent<Player>();
+            var player = results[i].transform.GetComponent<T>();
 
             if (player == null)
                 continue;
 
-            if (!InLineOfSight(Vector3.up, player.transform.position))
+            if (!InLineOfSight(Vector3.up, results[i].transform.position))
                 continue;
 
             if(!targets.Contains(player))
                 targets.Add(player);
 
-        }
-
-        if (targets.Count == 1)
-        {
-            selectedTarget = targets[0];
-        }
-        else
-        {
-            // check for closet target;
-            float closetTarget = rangeTrigger.radius;
-
-            foreach (var target in targets)
-            {
-                if (Vector3.Distance(transform.position, target.transform.position) < closetTarget)
-                    selectedTarget = target;
-            }
-        }
+        }        
 
         PrepareScan();
+
+        return targets;
     }
 
     bool InLineOfSight(Vector3 eyeheight, Vector3 targetPosition)
@@ -132,10 +87,9 @@ public class Scanner : MonoBehaviour
             float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
             if (Physics.Raycast(transform.position + eyeheight, direction.normalized, distanceToTarget, mask))
-            {
-                // not working something always blocking view even when nothing there
+            {                
                 // something blocking view
-               // return false;
+               return false;
             }
 
             return true;

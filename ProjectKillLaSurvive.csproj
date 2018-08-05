@@ -84,7 +84,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Ragdoll_TEST.cs" />
     <Compile Include="Assets\scripts\cameras\CameraCollision.cs" />
     <Compile Include="Assets\scripts\cameras\CameraFollow.cs" />
     <Compile Include="Assets\scripts\cameras\ThirdPersonCamera.cs" />
@@ -99,6 +98,9 @@
     <Compile Include="Assets\scripts\controllers\AudioController.cs" />
     <Compile Include="Assets\scripts\controllers\InputController.cs" />
     <Compile Include="Assets\scripts\controllers\MoveController.cs" />
+    <Compile Include="Assets\scripts\npc\EnemyAnimation.cs" />
+    <Compile Include="Assets\scripts\npc\EnemyHealth.cs" />
+    <Compile Include="Assets\scripts\npc\EnemyPatrol.cs" />
     <Compile Include="Assets\scripts\npc\EnemyPlayer.cs" />
     <Compile Include="Assets\scripts\pickups\AmmoPickup.cs" />
     <Compile Include="Assets\scripts\player\Player.cs" />
@@ -113,10 +115,13 @@
     <Compile Include="Assets\shared\GameManager.cs" />
     <Compile Include="Assets\shared\PathFinder.cs" />
     <Compile Include="Assets\shared\PickupItem.cs" />
+    <Compile Include="Assets\shared\Ragdoll.cs" />
     <Compile Include="Assets\shared\Respawner.cs" />
     <Compile Include="Assets\shared\Scanner.cs" />
     <Compile Include="Assets\shared\SpawnPoint.cs" />
     <Compile Include="Assets\shared\Timer.cs" />
+    <Compile Include="Assets\shared\Waypoint.cs" />
+    <Compile Include="Assets\shared\WaypointController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

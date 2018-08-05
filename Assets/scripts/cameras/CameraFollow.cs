@@ -68,7 +68,7 @@ public class CameraFollow : MonoBehaviour {
         rotY += finalInputX * inputSensitivity * Time.deltaTime;
         rotX += finalInputZ * inputSensitivity * Time.deltaTime;
 
-        rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
+        //rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;
 
@@ -86,6 +86,12 @@ public class CameraFollow : MonoBehaviour {
         {
             //set the target to follow
             cameraRig = aimCamera;
+        }
+
+        if (localPlayer.PlayerState.MoveState == PlayerState.EMoveState.CROUCHING)
+        {
+            // change camera height to move down a bit
+            //to do
         }
 
         //move towars game obj that is the targer

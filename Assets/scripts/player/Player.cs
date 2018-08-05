@@ -95,7 +95,7 @@ public class Player : MonoBehaviour {
         //if (direction != Vector2.zero)
         //    footsteps.Play();
 
-        MoveController.Move(transform.forward * direction.x * .01f + transform.right * direction.y * .01f);
+        MoveController.SimpleMove(transform.forward * direction.x + transform.right * direction.y );
 
         if (Vector3.Distance(transform.position, previousPosition) > minMoveThreshold)
             footsteps.Play();

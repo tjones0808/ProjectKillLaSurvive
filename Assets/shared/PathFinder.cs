@@ -21,14 +21,14 @@ public class PathFinder : MonoBehaviour {
         set
         {
             m_destinationReached = value;
-            if (OnDestinationReached != null)
+            if (m_destinationReached != false)
                 OnDestinationReached();
         }
     }
 
     public event System.Action OnDestinationReached;
 
-    private void Start()
+    private void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
 
@@ -37,11 +37,12 @@ public class PathFinder : MonoBehaviour {
     public void SetTarget(Vector3 target)
     {
         Agent.SetDestination(target);
+        destinationReached = false;
     }
 
     private void Update()
     {
-        if (destinationReached)
+        if (destinationReached || !Agent.hasPath)
             return;
 
         if (Agent.remainingDistance < distanceRemainingThreshold)
