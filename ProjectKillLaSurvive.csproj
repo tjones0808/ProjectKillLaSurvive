@@ -109,6 +109,7 @@
     <Compile Include="Assets\scripts\player\PlayerHealth.cs" />
     <Compile Include="Assets\scripts\player\PlayerShoot.cs" />
     <Compile Include="Assets\scripts\player\PlayerState.cs" />
+    <Compile Include="Assets\scripts\scriptableObjects\SwatSoldier.cs" />
     <Compile Include="Assets\scripts\ui\ammoCounter.cs" />
     <Compile Include="Assets\shared\Container.cs" />
     <Compile Include="Assets\shared\Destructable.cs" />

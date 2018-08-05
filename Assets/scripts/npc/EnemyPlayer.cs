@@ -6,9 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(EnemyHealth))]
 public class EnemyPlayer : MonoBehaviour {
 
-    PathFinder pathFinder;
     [SerializeField]
     Scanner playerScanner;
+
+    [SerializeField]
+    SwatSoldier settings;
+
+    PathFinder pathFinder;
     Player priorityTarget;
     List<Player> myTargets;
 
@@ -29,6 +33,7 @@ public class EnemyPlayer : MonoBehaviour {
     private void Start()
     {
         pathFinder = GetComponent<PathFinder>();
+        pathFinder.Agent.speed = settings.RunSpeed;
         playerScanner.OnScanReady += Scanner_OnScanReady;
         Scanner_OnScanReady();
     }

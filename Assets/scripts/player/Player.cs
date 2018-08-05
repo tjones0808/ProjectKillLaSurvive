@@ -15,11 +15,7 @@ public class Player : MonoBehaviour {
     }
 
 
-    [SerializeField] float walkSpeed;
-    [SerializeField] float runSpeed;
-    [SerializeField] float crouchSpeed;
-    [SerializeField] float sprintSpeed;
-    [SerializeField] float proneSpeed;
+    [SerializeField] SwatSoldier settings;
     [SerializeField] MouseInput MouseControl;
     [SerializeField] AudioController footsteps;
     [SerializeField] float minMoveThreshold;
@@ -76,21 +72,21 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     void Move () {
 
-        float moveSpeed = runSpeed;
+        float moveSpeed = settings.RunSpeed;
 
         if (playerInput.IsWalking)
-            moveSpeed = walkSpeed;
+            moveSpeed = settings.WalkSpeed;
 
         if (playerInput.IsRunning)
-            moveSpeed = runSpeed;
+            moveSpeed = settings.RunSpeed;
 
         if (playerInput.IsProned)
-            moveSpeed = proneSpeed;
+            moveSpeed = settings.ProneSpeed;
 
         if (playerInput.IsSprinting)
-            moveSpeed = sprintSpeed;
+            moveSpeed = settings.SprintSpeed;
 
-        Vector2 direction = new Vector2(playerInput.Vertical * runSpeed, playerInput.Horizontal * runSpeed);
+        Vector2 direction = new Vector2(playerInput.Vertical * moveSpeed, playerInput.Horizontal * moveSpeed);
 
         //if (direction != Vector2.zero)
         //    footsteps.Play();
