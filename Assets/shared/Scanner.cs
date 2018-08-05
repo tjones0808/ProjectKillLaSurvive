@@ -19,24 +19,31 @@ public class Scanner : MonoBehaviour
     {
         get
         {
-            if (rangeTrigger = null)
+            if (rangeTrigger == null)
                 rangeTrigger = GetComponent<SphereCollider>();
+
             return rangeTrigger.radius;
         }
     }
 
     public event System.Action OnScanReady;
+
+    private void Start()
+    {
+        rangeTrigger = GetComponent<SphereCollider>();
+    }
     
+
 
     void PrepareScan()
     {
-        GameManager.Instance.Timer.Add(() => 
+        GameManager.Instance.Timer.Add(() =>
         {
             if (OnScanReady != null)
                 OnScanReady();
         }, scanSpeed);
     }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -52,6 +59,7 @@ public class Scanner : MonoBehaviour
 
     public List<T> ScanForTargets<T>()
     {
+        print("Scanning for targets");
         // this would make the target line disappear after a target is out of scanner range
         //selectedTarget = null;
         List<T> targets = new List<T>();
@@ -68,10 +76,10 @@ public class Scanner : MonoBehaviour
             if (!InLineOfSight(Vector3.up, results[i].transform.position))
                 continue;
 
-            if(!targets.Contains(player))
+            if (!targets.Contains(player))
                 targets.Add(player);
 
-        }        
+        }
 
         PrepareScan();
 
@@ -87,9 +95,9 @@ public class Scanner : MonoBehaviour
             float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
             if (Physics.Raycast(transform.position + eyeheight, direction.normalized, distanceToTarget, mask))
-            {                
+            {
                 // something blocking view
-               return false;
+                return false;
             }
 
             return true;

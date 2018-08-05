@@ -29,7 +29,7 @@ public class EnemyPlayer : MonoBehaviour {
             return m_enemyHealth;
         }
     }
-
+    
     private void Start()
     {
         pathFinder = GetComponent<PathFinder>();
@@ -37,7 +37,6 @@ public class EnemyPlayer : MonoBehaviour {
         playerScanner.OnScanReady += Scanner_OnScanReady;
         Scanner_OnScanReady();
     }
-
     private void Scanner_OnScanReady()
     {
         if (priorityTarget != null)
