@@ -102,6 +102,7 @@
     <Compile Include="Assets\scripts\npc\EnemyPatrol.cs" />
     <Compile Include="Assets\scripts\npc\EnemyPlayer.cs" />
     <Compile Include="Assets\scripts\npc\EnemyShoot.cs" />
+    <Compile Include="Assets\scripts\npc\EnemyState.cs" />
     <Compile Include="Assets\scripts\pickups\AmmoPickup.cs" />
     <Compile Include="Assets\scripts\player\Player.cs" />
     <Compile Include="Assets\scripts\player\PlayerAim.cs" />
