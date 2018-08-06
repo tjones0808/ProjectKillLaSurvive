@@ -94,9 +94,11 @@ public class Scanner : MonoBehaviour
         {
             float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
 
-            if (Physics.Raycast(transform.position + eyeheight, direction.normalized, distanceToTarget, mask))
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position + eyeheight, direction.normalized, out hit, distanceToTarget, mask))
             {
                 // something blocking view
+                Debug.DrawLine(transform.position + eyeheight + transform.forward * .3f, direction.normalized + transform.forward * distanceToTarget);                
                 return false;
             }
 

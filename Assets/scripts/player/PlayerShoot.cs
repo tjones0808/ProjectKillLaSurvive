@@ -2,35 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerShoot : MonoBehaviour {
+[RequireComponent(typeof(Player))]
+public class PlayerShoot : WeaponController {
 
-    [SerializeField] float weaponSwitchTime;
-
-    Shooter[] weapons;
-    public Shooter activeWeapon;
-
-    int currentWeaponIndex;
-    bool canFire;
-    Transform weaponHolster;
-
-    public event System.Action<Shooter> OnWeaponSwitch;
-
-
-    private void Awake()
+    bool IsPlayerAlive;
+    private void Start()
     {
-        weaponHolster = transform.FindChild("Weapons");
-        weapons = transform.FindChild("Weapons").GetComponentsInChildren<Shooter>();
-        
+        IsPlayerAlive = true;
+        GetComponent<Player>().PlayerHealth.OnDeath += PlayerHealth_OnDeath;
+    }
 
-        if (weapons.Length > 0)
-            Equip(0);
-
-        canFire = true;
-
+    private void PlayerHealth_OnDeath()
+    {
+        IsPlayerAlive = false;
     }
 
     private void Update()
     {
+        if(!IsPlayerAlive)
+            return;
+
         if (GameManager.Instance.InputController.MouseWheelDown < 0)
             SwitchWeapon(-1);
         else if (GameManager.Instance.InputController.MouseWheelUp > 0)
@@ -39,54 +30,13 @@ public class PlayerShoot : MonoBehaviour {
         if (GameManager.Instance.LocalPlayer.PlayerState.MoveState == PlayerState.EMoveState.SPRINTING)
             return;
 
-        if (!canFire)
+        if (!CanFire)
             return;
 
         if (GameManager.Instance.InputController.Fire1)
         {
-            activeWeapon.Fire();
+            ActiveWeapon.Fire();
         }
     }
 
-    void DeactivateWeapons()
-    {
-        for (int i = 0; i < weapons.Length; i++)
-        {            
-            weapons[i].gameObject.SetActive(false);
-            weapons[i].transform.SetParent(weaponHolster);
-        }
-    }
-
-    void Equip(int weaponIndex)
-    {
-        DeactivateWeapons();
-        activeWeapon = weapons[weaponIndex];
-        activeWeapon.Equip();
-        canFire = true;
-        weapons[weaponIndex].gameObject.SetActive(true);
-
-        if (OnWeaponSwitch != null)
-            OnWeaponSwitch(activeWeapon);
-    }
-
-    void SwitchWeapon(int direction)
-    {
-        canFire = false;
-
-        currentWeaponIndex += direction;
-
-        if (currentWeaponIndex > weapons.Length - 1)
-        {
-            currentWeaponIndex = 0;
-        }
-
-        if (currentWeaponIndex < 0)
-            currentWeaponIndex = weapons.Length - 1;
-
-        GameManager.Instance.Timer.Add(() => {
-            Equip(currentWeaponIndex);
-        }, weaponSwitchTime);
-        
-
-    }
 }

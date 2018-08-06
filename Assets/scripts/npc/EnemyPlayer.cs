@@ -16,6 +16,8 @@ public class EnemyPlayer : MonoBehaviour {
     Player priorityTarget;
     List<Player> myTargets;
 
+    public event System.Action<Player> OnTargetSelected;
+
     private EnemyHealth m_enemyHealth;
     public EnemyHealth EnemyHealth
     {
@@ -33,10 +35,18 @@ public class EnemyPlayer : MonoBehaviour {
     private void Start()
     {
         pathFinder = GetComponent<PathFinder>();
-        pathFinder.Agent.speed = settings.RunSpeed;
+        pathFinder.Agent.speed = settings.WalkSpeed;
         playerScanner.OnScanReady += Scanner_OnScanReady;
         Scanner_OnScanReady();
+
+        EnemyHealth.OnDeath += EnemyHealth_OnDeath;
     }
+
+    private void EnemyHealth_OnDeath()
+    {
+        
+    }
+
     private void Scanner_OnScanReady()
     {
         if (priorityTarget != null)
@@ -50,12 +60,17 @@ public class EnemyPlayer : MonoBehaviour {
             SelectClosestTarget();
 
         if (priorityTarget != null)
-            SetDestinationToPriorityTarget();
+        {
+            if (OnTargetSelected != null)
+                OnTargetSelected(priorityTarget);
+        }
+        
     }
-    private void SetDestinationToPriorityTarget()
-    {
-        pathFinder.SetTarget(priorityTarget.transform.position);
-    }
+
+    //private void SetDestinationToPriorityTarget()
+    //{
+    //    pathFinder.SetTarget(priorityTarget.transform.position);
+    //}
 
     private void SelectClosestTarget()
     {
@@ -66,5 +81,14 @@ public class EnemyPlayer : MonoBehaviour {
                 priorityTarget = possibleTarget;
         }
     }
-    
+
+    private void Update()
+    {
+        if (priorityTarget == null)
+            return;
+
+        transform.LookAt(priorityTarget.transform.transform.position);
+        
+    }
+
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerHealth : Destructable {
 
+    [SerializeField]
+    Ragdoll ragDoll;
+
     [SerializeField] SpawnPoint[] spawnPoints;
     void SpawnAtNewSpawnPoint()
     {
@@ -16,7 +19,8 @@ public class PlayerHealth : Destructable {
     public override void Die()
     {
         base.Die();
-        SpawnAtNewSpawnPoint();
+        ragDoll.EnableRagdoll(true);
+        GameManager.Instance.Timer.Add(SpawnAtNewSpawnPoint, 5);
     }
 
     [ContextMenu("Test Die")]

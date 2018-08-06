@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerState))]
+[RequireComponent(typeof(PlayerHealth))]
 public class Player : MonoBehaviour {
     [System.Serializable]
     public class MouseInput
@@ -53,6 +54,18 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private PlayerHealth m_playerHealth;
+    public PlayerHealth PlayerHealth
+    {
+        get
+        {
+            if (m_playerHealth == null)
+                m_playerHealth = GetComponent<PlayerHealth>();
+
+            return m_playerHealth;
+        }
+    }
+
     InputController playerInput;
     Vector2 mouseInput;
 
@@ -68,6 +81,17 @@ public class Player : MonoBehaviour {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!PlayerHealth.IsAlive)
+            return;
+
+        Move();
+
+        LookAround();
     }
     // Use this for initialization
     void Move () {
@@ -99,14 +123,7 @@ public class Player : MonoBehaviour {
         previousPosition = transform.position;
     }
 	
-	// Update is called once per frame
-	void Update ()
-    {
 
-        Move();
-
-        LookAround();
-    }
 
     private void LookAround()
     {

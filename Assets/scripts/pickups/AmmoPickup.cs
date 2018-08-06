@@ -18,7 +18,7 @@ public class AmmoPickup : PickupItem {
 
 
         // needs refactoring, too many dots need to check for reloader and nulls
-        item.GetComponent<Player>().playerShoot.activeWeapon.reloader.HandleOnAmmoChanged();
+        item.GetComponent<Player>().playerShoot.ActiveWeapon.reloader.HandleOnAmmoChanged();
 
     }
 }
