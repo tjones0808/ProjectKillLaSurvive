@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Shared.Extensions;
 
 [RequireComponent(typeof(SphereCollider))]
 public class Scanner : MonoBehaviour
@@ -73,7 +74,7 @@ public class Scanner : MonoBehaviour
             if (player == null)
                 continue;
 
-            if (!InLineOfSight(Vector3.up, results[i].transform.position))
+            if (!transform.InLineOfSight(results[i].transform.position, fieldOfView, mask, Vector3.up))
                 continue;
 
             if (!targets.Contains(player))
@@ -84,27 +85,5 @@ public class Scanner : MonoBehaviour
         PrepareScan();
 
         return targets;
-    }
-
-    bool InLineOfSight(Vector3 eyeheight, Vector3 targetPosition)
-    {
-        Vector3 direction = targetPosition - transform.position;
-
-        if (Vector3.Angle(transform.forward, direction.normalized) < fieldOfView / 2)
-        {
-            float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position + eyeheight, direction.normalized, out hit, distanceToTarget, mask))
-            {
-                // something blocking view
-                Debug.DrawLine(transform.position + eyeheight + transform.forward * .3f, direction.normalized + transform.forward * distanceToTarget);                
-                return false;
-            }
-
-            return true;
-        }
-
-        return false;
     }
 }

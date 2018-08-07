@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.5.4p4</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion>4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -114,6 +116,10 @@
     <Compile Include="Assets\scripts\ui\ammoCounter.cs" />
     <Compile Include="Assets\shared\Container.cs" />
     <Compile Include="Assets\shared\Destructable.cs" />
+    <Compile Include="Assets\shared\EventBus.cs" />
+    <Compile Include="Assets\shared\EventController.cs" />
+    <Compile Include="Assets\shared\EventTrigger.cs" />
+    <Compile Include="Assets\shared\extensions\TransformExtensions.cs" />
     <Compile Include="Assets\shared\GameManager.cs" />
     <Compile Include="Assets\shared\PathFinder.cs" />
     <Compile Include="Assets\shared\PickupItem.cs" />

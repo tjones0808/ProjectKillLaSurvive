@@ -51,6 +51,19 @@ public class GameManager
         }
     }
 
+    private EventBus m_EventBus;
+    public EventBus EventBus
+    {
+        get
+        {
+            if (m_EventBus == null)
+                m_EventBus = new EventBus();
+
+            return m_EventBus;
+        }
+    }
+
+
     private InputController m_inputController;
     public InputController InputController
     {

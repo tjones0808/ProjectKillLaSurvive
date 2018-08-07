@@ -13,15 +13,14 @@ public class CameraFollow : MonoBehaviour {
 
     [SerializeField] CameraRig defaultCamera;
     [SerializeField] CameraRig aimCamera;
-    [SerializeField] CameraRig crouchCamera;
-    [SerializeField] CameraRig proneCamera;
+    
 
-
-
+    Transform aimPivot;
 
     public float CameraMoveSpeed = 120.0f;
     Vector3 FollowPOS;
     public float clampAngle = 80.0f;
+    public float damping = 1;
     public float inputSensitivity = 150.0f;
     public GameObject CameraObj;
     public GameObject PlayerObj;
@@ -52,6 +51,7 @@ public class CameraFollow : MonoBehaviour {
     private void Instance_OnLocalPlayerJoined(Player player)
     {
         localPlayer = player;
+        aimPivot = localPlayer.transform.Find("AimingPivot");
     }
 
     // Update is called once per frame
@@ -69,9 +69,9 @@ public class CameraFollow : MonoBehaviour {
         rotX += finalInputZ * inputSensitivity * Time.deltaTime;
 
         //rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
+        rotY = Mathf.Clamp(rotY, -clampAngle, clampAngle);
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
-        transform.rotation = localRotation;
-
+        transform.rotation = aimPivot.rotation;
 	}
     private void LateUpdate()
     {
@@ -88,14 +88,21 @@ public class CameraFollow : MonoBehaviour {
             cameraRig = aimCamera;
         }
 
+        //move towars game obj that is the targer
+        float step = CameraMoveSpeed * Time.deltaTime;
+        var targetHeight = new Vector3();
+
+
+        // to do need to lerp rotation and postion for smooth transitions
         if (localPlayer.PlayerState.MoveState == PlayerState.EMoveState.CROUCHING)
         {
             // change camera height to move down a bit
             //to do
+            targetHeight = new Vector3(cameraRig.target.transform.position.x, cameraRig.target.transform.position.y * cameraRig.CrouchHeight, cameraRig.target.transform.position.z);
         }
+        else
+            targetHeight = cameraRig.target.transform.position;
 
-        //move towars game obj that is the targer
-        float step = CameraMoveSpeed * Time.deltaTime;
-        transform.position = Vector3.MoveTowards(transform.position, cameraRig.target.transform.position, step);
+        transform.position = Vector3.MoveTowards(transform.position, targetHeight, step);
     }
 }

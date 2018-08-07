@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,20 @@ public class AmmoPickup : PickupItem {
     [SerializeField] EWeaponType weaponType;
     [SerializeField] float respawnTime;
     [SerializeField] int amount;
+
+    private void Start()
+    {
+        GameManager.Instance.EventBus.AddListener("EnemyDeath", new EventBus.EventListener()
+        {
+            Method = OnEnemyDeath
+        });
+    }
+
+    private void OnEnemyDeath()
+    {
+        print("Enemy Death Listener" + transform.name);
+    }
+
     public override void OnPickup(Transform item)
     {
         // not safe
