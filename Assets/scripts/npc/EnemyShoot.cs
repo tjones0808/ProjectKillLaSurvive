@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Shared.Extensions;
 
 [RequireComponent(typeof(EnemyPlayer))]
 public class EnemyShoot : WeaponController {
@@ -33,12 +34,29 @@ public class EnemyShoot : WeaponController {
 
     }
 
+    void CrouchState()
+    {
+        // 25% chance to take cover 0, 1, 2,3
+        bool takeCover = Random.Range(0, 3) == 0;
+
+        if (!takeCover)
+            return;
+
+        float distanceToTarget = Vector3.Distance(transform.position, ActiveWeapon.AimTarget.position);
+
+        if (distanceToTarget > 15)
+        {
+            enemyPlayer.GetComponent<EnemyAnimation>().IsCrouched = true;
+        }
+    }
+
     void StartBurst()
     {
-        if (!enemyPlayer.EnemyHealth.IsAlive)
+        if (!enemyPlayer.EnemyHealth.IsAlive && !CanSeeTarget())
             return;
 
         CheckReload();
+        CrouchState();
         shouldFire = true;
 
         GameManager.Instance.Timer.Add(EndBurst, Random.Range(burstDurationMin, burstDurationMax));
@@ -51,14 +69,29 @@ public class EnemyShoot : WeaponController {
             return;
 
         CheckReload();
+        CrouchState();
 
-        GameManager.Instance.Timer.Add(StartBurst, shootingSpeed);
+        if(CanSeeTarget())
+            GameManager.Instance.Timer.Add(StartBurst, shootingSpeed);
+    }
+
+    bool CanSeeTarget()
+    {
+        if (!transform.InLineOfSight(ActiveWeapon.AimTarget.position, 90, enemyPlayer.playerScanner.mask, Vector3.up))
+        {
+            enemyPlayer.ClearTargetAndScan();
+            return false;
+        }
+        return true;
     }
 
     void CheckReload()
     {
         if (ActiveWeapon.reloader.RoundsRemainingInClip == 0)
+        {
+            CrouchState();
             ActiveWeapon.Reload();
+        }
     }
 
     private void Update()

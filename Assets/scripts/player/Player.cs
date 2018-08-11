@@ -14,8 +14,7 @@ public class Player : MonoBehaviour {
 
         public bool LockMouse;
     }
-
-
+    
     [SerializeField] SwatSoldier settings;
     [SerializeField] MouseInput MouseControl;
     [SerializeField] AudioController footsteps;
@@ -82,11 +81,12 @@ public class Player : MonoBehaviour {
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
+    
 
     // Update is called once per frame
     void Update()
     {
-        if (!PlayerHealth.IsAlive)
+        if (!PlayerHealth.IsAlive || GameManager.Instance.IsPaused)
             return;
 
         Move();
@@ -109,6 +109,9 @@ public class Player : MonoBehaviour {
 
         if (playerInput.IsSprinting)
             moveSpeed = settings.SprintSpeed;
+
+        if (PlayerState.MoveState == PlayerState.EMoveState.COVER)
+            moveSpeed = settings.WalkSpeed;
 
         Vector2 direction = new Vector2(playerInput.Vertical * moveSpeed, playerInput.Horizontal * moveSpeed);
 

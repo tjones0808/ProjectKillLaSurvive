@@ -4,7 +4,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(PathFinder))]
 [RequireComponent(typeof(EnemyPlayer))]
-public class EnemyPatrol : MonoBehaviour {
+public class EnemyPatrol : MonoBehaviour
+{
 
     [SerializeField]
     WaypointController waypointController;
@@ -34,7 +35,7 @@ public class EnemyPatrol : MonoBehaviour {
 
     private void Awake()
     {
-        pathFinder = GetComponent<PathFinder>();    
+        pathFinder = GetComponent<PathFinder>();
 
         EnemyPlayer.EnemyHealth.OnDeath += EnemyHealth_OnDeath;
         EnemyPlayer.OnTargetSelected += EnemyPlayer_OnTargetSelected;
@@ -42,7 +43,8 @@ public class EnemyPatrol : MonoBehaviour {
 
     private void EnemyPlayer_OnTargetSelected(Player obj)
     {
-        pathFinder.Agent.Stop();
+        if (pathFinder.Agent.isActiveAndEnabled)
+            pathFinder.Agent.Stop();
     }
 
     private void OnEnable()
@@ -59,12 +61,14 @@ public class EnemyPatrol : MonoBehaviour {
 
     private void EnemyHealth_OnDeath()
     {
-        pathFinder.Agent.Stop();
+        if (pathFinder.Agent.isActiveAndEnabled)
+            pathFinder.Agent.Stop();
     }
 
     private void WaypointController_OnWaypointChanged(Waypoint waypoint)
     {
-        pathFinder.SetTarget(waypoint.transform.position);
+        if (pathFinder != null)
+            pathFinder.SetTarget(waypoint.transform.position);
     }
     private void PathFinder_OnDestinationReached()
     {

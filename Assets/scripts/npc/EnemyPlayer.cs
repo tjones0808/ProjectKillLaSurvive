@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ using UnityEngine;
 public class EnemyPlayer : MonoBehaviour {
 
     [SerializeField]
-    Scanner playerScanner;
+    public Scanner playerScanner;
 
     [SerializeField]
     SwatSoldier settings;
@@ -66,6 +67,33 @@ public class EnemyPlayer : MonoBehaviour {
             pathFinder.Agent.speed = settings.RunSpeed;
     }
 
+    void CheckEaseWeapon()
+    {
+        // check if we can stop aiming
+        if (priorityTarget != null)
+            return;
+
+        this.EnemyState.CurrentMode = EnemyState.EMode.UNAWARE;
+    }
+
+    void CheckContinuePatrol()
+    {
+        if (priorityTarget != null)
+            return;
+
+        pathFinder.Agent.Resume();
+    }
+
+    internal void ClearTargetAndScan()
+    {
+        priorityTarget = null;
+
+        GameManager.Instance.Timer.Add(CheckEaseWeapon, UnityEngine.Random.Range(3,6));
+        GameManager.Instance.Timer.Add(CheckContinuePatrol, UnityEngine.Random.Range(10,15));
+
+        Scanner_OnScanReady();
+    }
+
     private void EnemyHealth_OnDeath()
     {
         
@@ -86,7 +114,10 @@ public class EnemyPlayer : MonoBehaviour {
         if (priorityTarget != null)
         {
             if (OnTargetSelected != null)
+            {
+                this.EnemyState.CurrentMode = EnemyState.EMode.AWARE;
                 OnTargetSelected(priorityTarget);
+            }
         }
         
     }
@@ -102,8 +133,8 @@ public class EnemyPlayer : MonoBehaviour {
     }
 
     private void Update()
-    {
-        if (priorityTarget == null)
+    {        
+        if (priorityTarget == null || !EnemyHealth.IsAlive)
             return;
 
         transform.LookAt(priorityTarget.transform.transform.position);

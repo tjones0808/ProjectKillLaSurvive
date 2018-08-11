@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour {
 
     private Animator animator;
-
+    bool isInCover = false;
     private PlayerAim m_playerAim;
     private PlayerAim PlayerAim
     {
@@ -22,9 +22,13 @@ public class PlayerAnimation : MonoBehaviour {
     {
         animator = GetComponentInChildren<Animator>();
     }
+    
 
     private void Update()
     {
+        if (GameManager.Instance.IsPaused)
+            return;
+
         animator.SetFloat("Vertical", GameManager.Instance.InputController.Vertical);
         animator.SetFloat("Horizontal", GameManager.Instance.InputController.Horizontal);
 
@@ -36,6 +40,8 @@ public class PlayerAnimation : MonoBehaviour {
 
         animator.SetBool("IsAiming", GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMING || 
             GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMEDFIRING);
+
+        animator.SetBool("IsInCover", GameManager.Instance.LocalPlayer.PlayerState.MoveState == PlayerState.EMoveState.COVER ? true : false);
 
     }
 }

@@ -8,6 +8,8 @@ public class GameManager
     public event System.Action<Player> OnLocalPlayerJoined;
     private GameObject gameObject;
 
+    public bool IsPaused;
+
     private static GameManager m_Instance;
     public static GameManager Instance
     {

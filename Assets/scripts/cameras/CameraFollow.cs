@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour {
+public class CameraFollow : MonoBehaviour
+{
 
     [System.Serializable]
     public class CameraRig
@@ -13,17 +14,14 @@ public class CameraFollow : MonoBehaviour {
 
     [SerializeField] CameraRig defaultCamera;
     [SerializeField] CameraRig aimCamera;
-    
+
 
     Transform aimPivot;
 
     public float CameraMoveSpeed = 120.0f;
-    Vector3 FollowPOS;
     public float clampAngle = 80.0f;
     public float damping = 1;
     public float inputSensitivity = 150.0f;
-    public GameObject CameraObj;
-    public GameObject PlayerObj;
     public float mouseX;
     public float mouseY;
     public float finalInputX;
@@ -34,11 +32,12 @@ public class CameraFollow : MonoBehaviour {
     private float rotY = 0.0f;
     private float rotX = 0.0f;
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         Vector3 rot = transform.localRotation.eulerAngles;
         rotY = rot.y;
         rotX = rot.x;
-	}
+    }
 
 
     private void Awake()
@@ -55,24 +54,23 @@ public class CameraFollow : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-
+    void Update()
+    {
         //We setup rotation of the sticks here for controller support
-        float inputX = Input.GetAxis("RightStickHorizontal");
-        float inputZ = Input.GetAxis("RightStickVertical");
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
+        var inputX = GameManager.Instance.InputController.Horizontal;
+        var inputY = GameManager.Instance.InputController.Vertical;
+        mouseX = GameManager.Instance.InputController.MouseInput.x;
+        mouseY = GameManager.Instance.InputController.MouseInput.y;
         finalInputX = inputX + mouseX;
         finalInputZ = inputX + mouseY;
-
         rotY += finalInputX * inputSensitivity * Time.deltaTime;
         rotX += finalInputZ * inputSensitivity * Time.deltaTime;
-
         //rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
         rotY = Mathf.Clamp(rotY, -clampAngle, clampAngle);
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = aimPivot.rotation;
-	}
+
+    }
     private void LateUpdate()
     {
         CameraUpdater();
@@ -103,6 +101,7 @@ public class CameraFollow : MonoBehaviour {
         else
             targetHeight = cameraRig.target.transform.position;
 
-        transform.position = Vector3.MoveTowards(transform.position, targetHeight, step);
+        
+        transform.position = Vector3.MoveTowards(transform.position, targetHeight, step);       
     }
 }

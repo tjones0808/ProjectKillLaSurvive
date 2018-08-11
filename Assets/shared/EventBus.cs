@@ -12,7 +12,7 @@ public class EventBus {
 
         public EventListener()
         {
-            IsSingleShot = true;
+            IsSingleShot = false;
         }
     }
 

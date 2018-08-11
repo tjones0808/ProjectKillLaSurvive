@@ -8,7 +8,7 @@ public class Scanner : MonoBehaviour
 {
 
     [SerializeField] float scanSpeed;
-    [SerializeField] LayerMask mask;
+    [SerializeField] public LayerMask mask;
     [SerializeField]
     [Range(0, 360)]
     float fieldOfView;

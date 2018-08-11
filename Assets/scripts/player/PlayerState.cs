@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class PlayerState : MonoBehaviour {
 
+    bool isInCover = false;
+
     public enum EMoveState
     {
         WALKING,
         RUNNING,
         CROUCHING,
-        SPRINTING
+        SPRINTING,
+        COVER
     }
 
     public enum EWeaponState
@@ -33,6 +36,19 @@ public class PlayerState : MonoBehaviour {
 
             return m_InputController;
         }
+    }
+
+    private void Awake()
+    {
+        GameManager.Instance.EventBus.AddListener("CoverToggle", new EventBus.EventListener()
+        {
+            Method = ToggleCover
+        });
+    }
+
+    void ToggleCover()
+    {
+        isInCover = !isInCover;
     }
 
     private void Update()
@@ -74,6 +90,9 @@ public class PlayerState : MonoBehaviour {
 
         if (InputController.IsCrouched)
             MoveState = EMoveState.CROUCHING;
+
+        if (isInCover)
+            MoveState = EMoveState.COVER;
 
     }
 

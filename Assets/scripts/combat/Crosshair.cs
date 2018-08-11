@@ -4,21 +4,49 @@ using UnityEngine;
 
 public class Crosshair : MonoBehaviour {
 
-    [SerializeField] Texture2D image;
+    [SerializeField] float speed;
 
-    [SerializeField] int size;
+    public Transform Reticule;
 
-    private void OnGUI()
+    Transform crossTop;
+    Transform crossBottom;
+    Transform crossLeft;
+    Transform crossRight;
+
+    float reticuleStartPoint;
+    private void Start()
     {
+        crossTop = Reticule.FindChild("Cross/Top").transform;
+        crossBottom = Reticule.FindChild("Cross/Bottom").transform;
+        crossLeft = Reticule.FindChild("Cross/Left").transform;
+        crossRight = Reticule.FindChild("Cross/Right").transform;
 
-        if (GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMING || 
-            GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMEDFIRING)
+        reticuleStartPoint = crossTop.localPosition.y;
+    }
+
+    void SetVisibility(bool value)
+    {
+        Reticule.gameObject.SetActive(value);
+    }
+
+    private void Update()
+    {
+        SetVisibility(false);
+        if (GameManager.Instance.InputController.Fire2)
         {
-
+            SetVisibility(true);
             Vector3 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
-            screenPosition.y = Screen.height - screenPosition.y;
 
-            GUI.DrawTexture(new Rect(screenPosition.x - (size * 1.75f) , screenPosition.y - size / 2, size, size), image);
+            Reticule.transform.position = Vector3.Lerp(Reticule.transform.position, screenPosition, speed * Time.deltaTime);
         }
+       
+    }
+
+    public void ApplyScale(float scale)
+    {
+        crossTop.localPosition = new Vector3(0, reticuleStartPoint + scale, 0);
+        crossBottom.localPosition = new Vector3(0, -reticuleStartPoint - scale, 0);
+        crossLeft.localPosition = new Vector3(-reticuleStartPoint - scale, 0, 0);
+        crossRight.localPosition = new Vector3(reticuleStartPoint + scale, 0, 0);
     }
 }

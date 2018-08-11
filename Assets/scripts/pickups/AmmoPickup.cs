@@ -19,7 +19,8 @@ public class AmmoPickup : PickupItem {
 
     private void OnEnemyDeath()
     {
-        print("Enemy Death Listener" + transform.name);
+        //print("Enemy Death Listener" + transform.name);
+
     }
 
     public override void OnPickup(Transform item)
