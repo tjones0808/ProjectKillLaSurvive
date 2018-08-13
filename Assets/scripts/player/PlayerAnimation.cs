@@ -5,17 +5,52 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour {
 
     private Animator animator;
-    bool isInCover = false;
+    public float Vertical;
+    public float Horizontal;
+    public bool IsWalking;
+    public bool IsCrouched;
+    public bool IsSprinting;
+    public float AimAngle;
+    public bool IsAiming;
+    public bool IsInCover;
+    
     private PlayerAim m_playerAim;
     private PlayerAim PlayerAim
     {
         get
         {
-            if (m_playerAim == null)
+            if (m_playerAim == null && GameManager.Instance.LocalPlayer != null)
                 m_playerAim = GameManager.Instance.LocalPlayer.playerAim;
 
             return m_playerAim;
         }
+    }
+
+    private Player m_Player;
+    private Player Player
+    {
+        get
+        {
+            if (m_Player == null)
+                m_Player = GetComponent<Player>();
+            return m_Player;
+        }
+    }
+
+
+    void GetLocalPlayerInput()
+    {
+        Vertical = Player.InputState.Vertical;
+        Horizontal = Player.InputState.Horizontal;
+
+        IsWalking = GameManager.Instance.LocalPlayer.PlayerState.MoveState == PlayerState.EMoveState.WALKING;
+        IsSprinting = Player.InputState.IsSprinting;
+        IsCrouched = Player.InputState.IsCrouched;
+
+        AimAngle = PlayerAim.GetAngle();
+        IsAiming = GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMING ||
+            GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMEDFIRING;
+        IsInCover = GameManager.Instance.LocalPlayer.PlayerState.MoveState == PlayerState.EMoveState.COVER ? true : false;
     }
 
     private void Awake()
@@ -29,19 +64,21 @@ public class PlayerAnimation : MonoBehaviour {
         if (GameManager.Instance.IsPaused)
             return;
 
-        animator.SetFloat("Vertical", GameManager.Instance.InputController.Vertical);
-        animator.SetFloat("Horizontal", GameManager.Instance.InputController.Horizontal);
+        if (Player.IsLocalPlayer)
+            GetLocalPlayerInput();
 
-        animator.SetBool("IsWalking", GameManager.Instance.InputController.IsWalking);
-        animator.SetBool("IsSprinting", GameManager.Instance.InputController.IsSprinting);
-        animator.SetBool("IsCrouched", GameManager.Instance.InputController.IsCrouched);
+        animator.SetFloat("Vertical", Vertical);
+        animator.SetFloat("Horizontal", Horizontal);
 
-        animator.SetFloat("AimAngle", PlayerAim.GetAngle());
+        animator.SetBool("IsWalking", IsWalking);
+        animator.SetBool("IsSprinting",IsSprinting);
+        animator.SetBool("IsCrouched", IsCrouched);
 
-        animator.SetBool("IsAiming", GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMING || 
-            GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMEDFIRING);
+        animator.SetFloat("AimAngle", AimAngle);
 
-        animator.SetBool("IsInCover", GameManager.Instance.LocalPlayer.PlayerState.MoveState == PlayerState.EMoveState.COVER ? true : false);
+        animator.SetBool("IsAiming", IsAiming);
+
+        animator.SetBool("IsInCover", IsInCover);
 
     }
 }

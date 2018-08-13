@@ -33,11 +33,25 @@ public class WeaponController : MonoBehaviour {
         weaponHolster = transform.FindChild("Weapons");
         weapons = transform.FindChild("Weapons").GetComponentsInChildren<Shooter>();
 
-
         if (weapons.Length > 0)
             Equip(0);
 
         CanFire = true;
+
+    }
+
+    public Vector3 GetImpactPoint()
+    {
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(.5f, .5f, 0));
+        RaycastHit hit;
+        Vector3 targetPosition = ray.GetPoint(10);
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            return hit.point;
+        }
+
+        return transform.position + transform.forward * 200;
 
     }
 

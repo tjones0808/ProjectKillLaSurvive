@@ -737,7 +737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4932440445833144}
   m_Layer: 8
-  m_Name: cameraFollow3rd
+  m_Name: ThirdPersonCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1104,7 +1104,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4673745613943120}
   m_Layer: 8
-  m_Name: cameraFollow3rdAimed
+  m_Name: ThirdPersonCameraAimed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1749,7 +1749,7 @@ Transform:
   - {fileID: 4415792866314326}
   - {fileID: 4736862449505916}
   m_Father: {fileID: 4779028878169802}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0.06, z: 0}
 --- !u!4 &4106515736452922
 Transform:
@@ -2238,7 +2238,7 @@ Transform:
   m_Children:
   - {fileID: 4873011303178872}
   m_Father: {fileID: 4779028878169802}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4552712291280042
 Transform:
@@ -2405,7 +2405,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4779028878169802}
-  m_RootOrder: 6
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4679483235384950
 Transform:
@@ -2582,7 +2582,7 @@ Transform:
   m_Children:
   - {fileID: 4744549213498862}
   m_Father: {fileID: 4779028878169802}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4779028878169802
 Transform:
@@ -2596,11 +2596,11 @@ Transform:
   m_Children:
   - {fileID: 4125494538058584}
   - {fileID: 4932440445833144}
+  - {fileID: 4673745613943120}
   - {fileID: 4100450762821676}
   - {fileID: 4989719138087376}
   - {fileID: 4523138665812598}
   - {fileID: 4778091109598442}
-  - {fileID: 4673745613943120}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2959,7 +2959,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4779028878169802}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4992815621555752
 Transform:
@@ -3716,6 +3716,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 019e49ec83140db4aa5b47b9e90fd347, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Vertical: 0
+  Horizontal: 0
+  IsWalking: 0
+  IsCrouched: 0
+  IsSprinting: 0
+  AimAngle: 0
+  IsAiming: 0
+  IsInCover: 0
 --- !u!114 &114401714968708888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3740,7 +3748,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d9e26ef399dd52439eecfdd33baa320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings: {fileID: 11400000, guid: bef106b4e702335459a43ea5828954e3, type: 2}
+  Settings: {fileID: 11400000, guid: bef106b4e702335459a43ea5828954e3, type: 2}
   MouseControl:
     Damping: {x: 5, y: 3}
     Sensitivity: {x: 5, y: 6}
@@ -3748,7 +3756,7 @@ MonoBehaviour:
   footsteps: {fileID: 114481177593212506}
   minMoveThreshold: 0.035
   playerAim: {fileID: 114794012394017362}
-  playerShoot: {fileID: 0}
+  IsLocalPlayer: 0
 --- !u!114 &114481177593212506
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4001,9 +4009,9 @@ MonoBehaviour:
   hand: {fileID: 4756558444089406}
   audioReload: {fileID: 114559106220564182}
   audioFire: {fileID: 114996025725686652}
-  AimTarget: {fileID: 4744549213498862}
+  AimPoint: {x: 0, y: 0, z: 0}
   AimTargetOffset: {x: 0, y: 0, z: 0}
-  reloader: {fileID: 0}
+  Reloader: {fileID: 0}
   nextFireAllowed: 0
   canFire: 0
 --- !u!114 &114959800778079642
@@ -4022,9 +4030,9 @@ MonoBehaviour:
   hand: {fileID: 4756558444089406}
   audioReload: {fileID: 114528854996606270}
   audioFire: {fileID: 114508386184488928}
-  AimTarget: {fileID: 0}
+  AimPoint: {x: 0, y: 0, z: 0}
   AimTargetOffset: {x: 0, y: 0, z: 0}
-  reloader: {fileID: 0}
+  Reloader: {fileID: 0}
   nextFireAllowed: 0
   canFire: 0
 --- !u!114 &114996025725686652

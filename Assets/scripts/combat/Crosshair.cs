@@ -16,6 +16,15 @@ public class Crosshair : MonoBehaviour {
     float reticuleStartPoint;
     private void Start()
     {
+
+        if (!GetComponentInParent<Player>().IsLocalPlayer)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        Reticule = GameObject.Find("Canvas/Reticule").transform;
+
         crossTop = Reticule.FindChild("Cross/Top").transform;
         crossBottom = Reticule.FindChild("Cross/Bottom").transform;
         crossLeft = Reticule.FindChild("Cross/Left").transform;

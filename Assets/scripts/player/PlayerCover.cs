@@ -19,8 +19,11 @@ public class PlayerCover : MonoBehaviour {
     {
         get
         {
-            return GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMEDFIRING ||
+            if(GameManager.Instance.LocalPlayer != null)
+                return GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMEDFIRING ||
                 GameManager.Instance.LocalPlayer.PlayerState.WeaponState == PlayerState.EWeaponState.AIMING;
+
+            return false;
         }
     }
 

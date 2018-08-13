@@ -19,6 +19,8 @@ public class EnemyShoot : WeaponController {
 
     bool shouldFire;
 
+    Vector3 aimTarget;
+
     private void Start()
     {
         enemyPlayer = GetComponent<EnemyPlayer>();
@@ -27,7 +29,8 @@ public class EnemyShoot : WeaponController {
 
     private void EnemyPlayer_OnTargetSelected(Player obj)
     {
-        ActiveWeapon.AimTarget = obj.transform;
+        aimTarget = obj.transform.position;
+        ActiveWeapon.SetAimPoint(obj.transform.position);
         ActiveWeapon.AimTargetOffset = Vector3.up * 1.5f;
 
         StartBurst();
@@ -42,7 +45,7 @@ public class EnemyShoot : WeaponController {
         if (!takeCover)
             return;
 
-        float distanceToTarget = Vector3.Distance(transform.position, ActiveWeapon.AimTarget.position);
+        float distanceToTarget = Vector3.Distance(transform.position, aimTarget);
 
         if (distanceToTarget > 15)
         {
@@ -77,7 +80,7 @@ public class EnemyShoot : WeaponController {
 
     bool CanSeeTarget()
     {
-        if (!transform.InLineOfSight(ActiveWeapon.AimTarget.position, 90, enemyPlayer.playerScanner.mask, Vector3.up))
+        if (!transform.InLineOfSight(aimTarget, 90, enemyPlayer.playerScanner.mask, Vector3.up))
         {
             enemyPlayer.ClearTargetAndScan();
             return false;
@@ -87,7 +90,7 @@ public class EnemyShoot : WeaponController {
 
     void CheckReload()
     {
-        if (ActiveWeapon.reloader.RoundsRemainingInClip == 0)
+        if (ActiveWeapon.Reloader.RoundsRemainingInClip == 0)
         {
             CrouchState();
             ActiveWeapon.Reload();

@@ -87,7 +87,6 @@
     <Compile Include="Assets\scripts\WinCondition.cs" />
     <Compile Include="Assets\scripts\cameras\CameraCollision.cs" />
     <Compile Include="Assets\scripts\cameras\CameraFollow.cs" />
-    <Compile Include="Assets\scripts\cameras\ThirdPersonCamera.cs" />
     <Compile Include="Assets\scripts\combat\AssualtRifle.cs" />
     <Compile Include="Assets\scripts\combat\Crosshair.cs" />
     <Compile Include="Assets\scripts\combat\EWeaponType.cs" />
@@ -113,10 +112,12 @@
     <Compile Include="Assets\scripts\player\PlayerAnimation.cs" />
     <Compile Include="Assets\scripts\player\PlayerCover.cs" />
     <Compile Include="Assets\scripts\player\PlayerHealth.cs" />
+    <Compile Include="Assets\scripts\player\PlayerNetwork.cs" />
     <Compile Include="Assets\scripts\player\PlayerShoot.cs" />
     <Compile Include="Assets\scripts\player\PlayerState.cs" />
     <Compile Include="Assets\scripts\scriptableObjects\SwatSoldier.cs" />
     <Compile Include="Assets\scripts\ui\ammoCounter.cs" />
+    <Compile Include="Assets\shared\CameraChange.cs" />
     <Compile Include="Assets\shared\Container.cs" />
     <Compile Include="Assets\shared\Cover.cs" />
     <Compile Include="Assets\shared\Destructable.cs" />
@@ -131,12 +132,17 @@
     <Compile Include="Assets\shared\Scanner.cs" />
     <Compile Include="Assets\shared\Shooter.cs" />
     <Compile Include="Assets\shared\SpawnPoint.cs" />
+    <Compile Include="Assets\shared\SpawnPointController.cs" />
     <Compile Include="Assets\shared\Timer.cs" />
     <Compile Include="Assets\shared\Waypoint.cs" />
     <Compile Include="Assets\shared\WaypointController.cs" />
     <Compile Include="Assets\shared\WeaponController.cs" />
     <Compile Include="Assets\shared\WeaponRecoil.cs" />
     <Compile Include="Assets\shared\extensions\TransformExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Plugins\GitHub\Editor\credits.txt" />
+    <None Include="Assets\Plugins\GitHub\Editor\eula.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

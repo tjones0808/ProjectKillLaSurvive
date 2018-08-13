@@ -5,7 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerState))]
 [RequireComponent(typeof(PlayerHealth))]
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
     [System.Serializable]
     public class MouseInput
     {
@@ -14,18 +15,38 @@ public class Player : MonoBehaviour {
 
         public bool LockMouse;
     }
-    
-    [SerializeField] SwatSoldier settings;
+
+    [SerializeField]public SwatSoldier Settings;
     [SerializeField] MouseInput MouseControl;
     [SerializeField] AudioController footsteps;
     [SerializeField] float minMoveThreshold;
 
     public PlayerAim playerAim;
+    public bool IsLocalPlayer;
     Vector3 previousPosition;
 
-    [HideInInspector]
-    public PlayerShoot playerShoot;
-    
+    PlayerShoot m_PlayerShoot;
+    public PlayerShoot PlayerShoot
+    {
+        get
+        {
+            if (m_PlayerShoot == null)
+                m_PlayerShoot = GetComponent<PlayerShoot>();
+            return m_PlayerShoot;
+        }
+    }
+
+    WeaponController m_WeaponController;
+    public WeaponController WeaponControllerr
+    {
+        get
+        {
+            if (m_WeaponController == null)
+                m_WeaponController = GetComponent<WeaponController>();
+            return m_WeaponController;
+        }
+    }
+
 
     CharacterController m_moveController;
     public CharacterController MoveController
@@ -40,7 +61,18 @@ public class Player : MonoBehaviour {
         }
         set { }
     }
-    
+
+    private InputController.InputState m_InputState;
+    public InputController.InputState InputState
+    {
+        get
+        {
+            if (m_InputState == null)
+                m_InputState = GameManager.Instance.InputController.State;
+            return m_InputState;
+        }
+    }
+
     private PlayerState m_playerState;
     public PlayerState PlayerState
     {
@@ -65,13 +97,19 @@ public class Player : MonoBehaviour {
         }
     }
 
-    InputController playerInput;
     Vector2 mouseInput;
 
     void Awake()
     {
-        playerShoot = GetComponent<PlayerShoot>();
-        playerInput = GameManager.Instance.InputController;        
+        //if (GameManager.Instance.IsNetworkGame)
+            SetAsLocalPlayer();
+
+
+    }
+
+    public void SetAsLocalPlayer()
+    {
+        IsLocalPlayer = true;
 
         GameManager.Instance.LocalPlayer = this;
 
@@ -81,7 +119,7 @@ public class Player : MonoBehaviour {
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
-    
+
 
     // Update is called once per frame
     void Update()
@@ -89,52 +127,80 @@ public class Player : MonoBehaviour {
         if (!PlayerHealth.IsAlive || GameManager.Instance.IsPaused)
             return;
 
-        Move();
+        if (IsLocalPlayer)
+        {
+            if (!GameManager.Instance.IsNetworkGame)
+            {
+                Move();
 
-        LookAround();
+            }
+
+
+            LookAround();
+
+        }
+
     }
-    // Use this for initialization
-    void Move () {
 
-        float moveSpeed = settings.RunSpeed;
+    public void SetInputController(InputController.InputState state)
+    {
+        m_InputState = state;
+    }
 
-        if (playerInput.IsWalking)
-            moveSpeed = settings.WalkSpeed;
+    private void Move()
+    {
+        if (InputState == null)
+            return;
 
-        if (playerInput.IsRunning)
-            moveSpeed = settings.RunSpeed;
+        Move(InputState.Horizontal, InputState.Vertical);
 
-        if (playerInput.IsProned)
-            moveSpeed = settings.ProneSpeed;
 
-        if (playerInput.IsSprinting)
-            moveSpeed = settings.SprintSpeed;
+    }
+
+    public void Move(float horizontal, float vertical)
+    {
+        float moveSpeed = Settings.RunSpeed;
+
+        if (InputState.IsWalking)
+            moveSpeed = Settings.WalkSpeed;
+
+        //if (playerInput.IsProned)
+        //    moveSpeed = settings.ProneSpeed;
+
+        if (InputState.IsSprinting)
+            moveSpeed = Settings.SprintSpeed;
 
         if (PlayerState.MoveState == PlayerState.EMoveState.COVER)
-            moveSpeed = settings.WalkSpeed;
+            moveSpeed = Settings.WalkSpeed;
 
-        Vector2 direction = new Vector2(playerInput.Vertical * moveSpeed, playerInput.Horizontal * moveSpeed);
+        Vector2 direction = new Vector2(vertical * moveSpeed, horizontal * moveSpeed);
 
         //if (direction != Vector2.zero)
         //    footsteps.Play();
 
-        MoveController.SimpleMove(transform.forward * direction.x + transform.right * direction.y );
+        MoveController.SimpleMove(transform.forward * direction.x + transform.right * direction.y);
 
         if (Vector3.Distance(transform.position, previousPosition) > minMoveThreshold)
             footsteps.Play();
 
         previousPosition = transform.position;
     }
-	
+
+    [ContextMenu("Respawn")]
+    void Respawn()
+    {
+        // add spawnpointcontroller
+    }
+
 
 
     private void LookAround()
     {
-        mouseInput.x = Mathf.Lerp(mouseInput.x, playerInput.MouseInput.x, 1f / MouseControl.Damping.x);
-        mouseInput.y = Mathf.Lerp(mouseInput.y, playerInput.MouseInput.y, 1f / MouseControl.Damping.y);
+        mouseInput.x = Mathf.Lerp(mouseInput.x, GameManager.Instance.InputController.MouseInput.x, 1f / MouseControl.Damping.x);
+        mouseInput.y = Mathf.Lerp(mouseInput.y, GameManager.Instance.InputController.MouseInput.y, 1f / MouseControl.Damping.y);
 
         transform.Rotate(Vector3.up * mouseInput.x * MouseControl.Sensitivity.x);
-        
+
 
         playerAim.SetRotation(mouseInput.y * MouseControl.Sensitivity.y);
 

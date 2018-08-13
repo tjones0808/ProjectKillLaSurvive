@@ -10,6 +10,9 @@ public class GameManager
 
     public bool IsPaused;
 
+    private bool m_IsNetworkGame;
+    private bool m_IsNetowrkGameChecked;
+
     private static GameManager m_Instance;
     public static GameManager Instance
     {
@@ -62,6 +65,20 @@ public class GameManager
                 m_EventBus = new EventBus();
 
             return m_EventBus;
+        }
+    }
+
+    public bool IsNetworkGame
+    {
+        get
+        {
+            if (!m_IsNetowrkGameChecked)
+            {
+                m_IsNetowrkGameChecked = true;
+                m_IsNetworkGame = GameObject.Find("NetworkManager") != null;
+            }
+
+            return m_IsNetworkGame;
         }
     }
 

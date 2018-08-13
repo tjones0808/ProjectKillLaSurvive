@@ -51,29 +51,34 @@ public class CameraFollow : MonoBehaviour
     {
         localPlayer = player;
         aimPivot = localPlayer.transform.Find("AimingPivot");
+        defaultCamera.target = localPlayer.transform.Find("ThirdPersonCamera").gameObject;
+        aimCamera.target = localPlayer.transform.Find("ThirdPersonCameraAimed").gameObject;       
     }
 
     // Update is called once per frame
     void Update()
     {
-        //We setup rotation of the sticks here for controller support
-        var inputX = GameManager.Instance.InputController.Horizontal;
-        var inputY = GameManager.Instance.InputController.Vertical;
-        mouseX = GameManager.Instance.InputController.MouseInput.x;
-        mouseY = GameManager.Instance.InputController.MouseInput.y;
-        finalInputX = inputX + mouseX;
-        finalInputZ = inputX + mouseY;
-        rotY += finalInputX * inputSensitivity * Time.deltaTime;
-        rotX += finalInputZ * inputSensitivity * Time.deltaTime;
-        //rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
-        rotY = Mathf.Clamp(rotY, -clampAngle, clampAngle);
-        Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
-        transform.rotation = aimPivot.rotation;
-
+        if (localPlayer != null)
+        {
+            //We setup rotation of the sticks here for controller support
+            var inputX = GameManager.Instance.InputController.Horizontal;
+            var inputY = GameManager.Instance.InputController.Vertical;
+            mouseX = GameManager.Instance.InputController.MouseInput.x;
+            mouseY = GameManager.Instance.InputController.MouseInput.y;
+            finalInputX = inputX + mouseX;
+            finalInputZ = inputX + mouseY;
+            rotY += finalInputX * inputSensitivity * Time.deltaTime;
+            rotX += finalInputZ * inputSensitivity * Time.deltaTime;
+            //rotX = Mathf.Clamp(rotX, -clampAngle, clampAngle);
+            rotY = Mathf.Clamp(rotY, -clampAngle, clampAngle);
+            Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
+            transform.rotation = aimPivot.rotation;
+        }
     }
     private void LateUpdate()
     {
-        CameraUpdater();
+        if(localPlayer != null)
+            CameraUpdater();
     }
 
     void CameraUpdater()

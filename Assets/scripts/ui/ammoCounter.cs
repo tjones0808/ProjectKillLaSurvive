@@ -26,7 +26,7 @@ public class ammoCounter : MonoBehaviour {
 
     private void PlayerShoot_OnWeaponSwitch(Shooter activeWeapon)
     {
-        reloader = activeWeapon.reloader;
+        reloader = activeWeapon.Reloader;
         reloader.OnAmmoChanged += HandleOnAmmoChanged;
         HandleOnAmmoChanged();
     }
