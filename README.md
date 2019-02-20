@@ -1,2 +1,2 @@
 # ProjectKillLaSurvive
-Jones Tech Co 1st 3rd Person Shooter
+3rd Person Shooter
